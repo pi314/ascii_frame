@@ -47,8 +47,10 @@ As a Python Module
 -------------------
 This Python module provides programming API to wrap text programmatically.
 
-* ``wrap(data, width=0, padding=0)`` ::
+* ``wrap(data, width=0, padding=0)`` :
 
+  .. code:: python
+  
     >>> import ascii_frame
     >>> ascii_frame.wrap(['ascii frame'])
     ['.-----.', '|ascii|', '|frame|', "'-----'"]
