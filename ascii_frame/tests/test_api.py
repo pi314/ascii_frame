@@ -1,7 +1,7 @@
 from pytest import raises
 from unittest.mock import patch, Mock
 
-from ..ascii_frame import (wrap, break_line)
+from ..ascii_frame import wrap
 
 
 def test_basic():
@@ -20,13 +20,6 @@ def test_multi_lines():
     ]
 
 def test_width_constrain():
-    assert list(break_line('ascii_frame', 3)) == [
-        (3, 'asc'),
-        (3, 'ii_'),
-        (3, 'fra'),
-        (2, 'me'),
-    ]
-
     assert wrap(['ascii_frame'], width=3) == [
         '.---.',
         '|asc|',
