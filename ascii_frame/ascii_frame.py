@@ -38,9 +38,9 @@ def wrap(data, width=0, padding=0):
     ).list + ["'{}'".format('-' * (max_len + 2 * padding))]
 
 
-def print(data, width=0, padding=0):
+def print(data, width=0, padding=0, **kwargs):
     for l in wrap(data, width=width, padding=padding):
-        print_(l)
+        print_(l, **kwargs)
 
 
 def main():
