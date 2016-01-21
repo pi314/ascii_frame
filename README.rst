@@ -1,8 +1,8 @@
-=====
-frame
-=====
+===========
+ASCII Frame
+===========
 
-Wrap your stdout in a frame ::
+Wrap your stdout in an ASCII frame ::
 
   $ ls -al
   total 16
@@ -29,4 +29,3 @@ Wrap your stdout in a frame ::
   | -rw-r--r--   1 cychih  staff  869  6  6 14:55 README.rst |
   | -rwxr-xr-x   1 cychih  staff  600  6  6 14:53 frame      |
   '----------------------------------------------------------'
-
