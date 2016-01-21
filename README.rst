@@ -71,3 +71,12 @@ This Python module provides programming API to wrap text programmatically.
 * ``print(data, width=0, padding=0, **kwargs)``
 
   - Just a wrapping of ``wrap()`` and builtin ``print()``
+
+Testing
+--------
+::
+
+  git clone git@github.com:pi314/ascii_frame.git
+  cd ascii_frame
+  pip install -e .
+  python setup.py test
