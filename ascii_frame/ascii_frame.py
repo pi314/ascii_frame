@@ -35,8 +35,8 @@ def wrap(data, width=None, padding=None):
     ).list + ["'{}'".format('-' * max_len)]
 
 
-def print(args):
-    for l in wrap(args.input_file, width=args.width, padding=args.padding):
+def print(data, width=None, padding=None):
+    for l in wrap(data, width=width, padding=padding):
         print_(l)
 
 
@@ -60,4 +60,4 @@ def main():
         help='Read content from file.')
 
     args = parser.parse_args()
-    print(args)
+    print(args.input_file, width=args.width, padding=args.padding)
