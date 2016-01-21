@@ -20,22 +20,26 @@ def text_generator(data, width=None):
             yield lo
 
 
-def wrap(data, width=None, padding=None):
+def wrap(data, width=0, padding=0):
+    if width and padding:
+        width -= 2 * padding
+        if width <= 0:
+            raise ValueError('No remain width available, increase width or decrease padding.')
+
     ret = list(text_generator(data, width=width))
 
     max_len = max(ret, key=lambda lo: lo.width).width
-    if isinstance(width, int):
-        max_len = max(max_len, width)
+    max_len = max(max_len, width)
 
-    return ['.{}.'.format('-' * max_len)] + chain(ret).map(
-        lambda lo: '|{t}{s}|'.format(
-            t=lo.text,
+    return ['.{}.'.format('-' * (max_len + 2 * padding))] + chain(ret).map(
+        lambda lo: '|{p}{t}{s}{p}|'.format(
+            t=lo.text, p=' ' * padding,
             s=' ' * (max_len - lo.width)
         )
-    ).list + ["'{}'".format('-' * max_len)]
+    ).list + ["'{}'".format('-' * (max_len + 2 * padding))]
 
 
-def print(data, width=None, padding=None):
+def print(data, width=0, padding=0):
     for l in wrap(data, width=width, padding=padding):
         print_(l)
 
@@ -47,11 +51,11 @@ def main():
     )
 
     parser.add_argument('-w', '--width',
-        type=int,
+        type=int, default=0,
         help='Set the width of ASCII frame.')
 
     parser.add_argument('-p', '--padding',
-        type=int,
+        type=int, default=0,
         help='Set the padding of ASCII frame.')
 
     parser.add_argument('-f', '--input-file',
