@@ -48,6 +48,6 @@ setup(
     packages=find_packages(exclude=['scripts']),
     scripts=['scripts/ascii_frame'],
 
-    tests_require=['coverage', 'pytest', 'pytest-cov'],
+    tests_require=['pytest'],
     cmdclass={'test': PyTest},
 )
