@@ -3,7 +3,6 @@ import re
 import argparse
 
 from .chain import chain
-
 from unicodedata import east_asian_width as uwidth
 # for more information, see http://unicode.org/reports/tr11/
 
