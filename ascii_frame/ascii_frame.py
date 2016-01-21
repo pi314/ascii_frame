@@ -3,27 +3,50 @@ import re
 import argparse
 
 from .chain import chain
-from unicodedata import east_asian_width as uwidth
+from unicodedata import east_asian_width
 # for more information, see http://unicode.org/reports/tr11/
 
 
 print_ = print
 
 
-def text_generator(data):
-    return chain(data).map(
-        str.rstrip
+def uwidth(c):
+    return 1 + (east_asian_width(c) in 'WF')
+
+
+def text_generator(data, width=None):
+    m = chain(data).map(
+        lambda s: re.sub(r'\x1b\[[^hm]*[hm]', '', s.rstrip())
     ).map(
-        lambda s: re.sub(r'\x1b\[[^hm]*[hm]', '', s)
-    ).map(
-        lambda s: (sum(1+(uwidth(c) in 'WF') for c in s), s)
+        lambda s: (sum(uwidth(c) for c in s), s)
     )
+
+    for pair in m:
+        if width and width > 0 and pair[0] > width:
+            for i in break_line(pair[1], width):
+                yield i
+        else:
+            yield pair
+
+
+def break_line(s, width):
+    w, ret = 0, ''
+    for c in s:
+        if w + uwidth(c) > width:
+            yield (w, ret)
+            w, ret = 0, ''
+
+        w, ret = w + uwidth(c), ret + c
+
+    yield (w, ret)
 
 
 def wrap(data, width=None, padding=None):
-    ret = text_generator(data).list
+    ret = list(text_generator(data, width=width))
 
     max_len = max(ret, key=lambda t: t[0])[0]
+    if isinstance(width, int):
+        max_len = max(max_len, width)
 
     return ['.{}.'.format('-' * max_len)] + chain(ret).map(
         lambda s: '|{t}{s}|'.format(
