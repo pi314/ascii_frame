@@ -28,8 +28,7 @@ def wrap(data, width=0, padding=0):
 
     ret = list(text_generator(data, width=width))
 
-    max_len = max(ret, key=lambda lo: lo.width).width
-    max_len = max(max_len, width)
+    max_len = max(*chain(ret).map(lambda lo: lo.width), width)
 
     return ['.{}.'.format('-' * (max_len + 2 * padding))] + chain(ret).map(
         lambda lo: '|{p}{t}{s}{p}|'.format(
