@@ -65,8 +65,8 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
     ]
 
 
-def print(data, width=0, padding=0, **kwargs):
-    for l in wrap(data, width=width, padding=padding):
+def print(data, width=0, padding=0, corners=".''.", edges='-|-|', **kwargs):
+    for l in wrap(data, width=width, padding=padding, corners=corners, edges=edges):
         print_(l, **kwargs)
 
 
@@ -89,5 +89,19 @@ def main():
         default=sys.stdin,
         help='Read content from file.')
 
+    parser.add_argument('-c', '--corners',
+        type=str,
+        default=".''.",
+        help='Customize corners of frame.  4 chars in clockwise order from top right.')
+
+    parser.add_argument('-e', '--edges',
+        type=str,
+        default="-|-|",
+        help='Customize corners of frame.  4 chars in clockwise order from top.')
+
     args = parser.parse_args()
-    print(args.input_file, width=args.width, padding=args.padding)
+    print(args.input_file,
+        width=args.width,
+        padding=args.padding,
+        corners=args.corners,
+        edges=args.edges)
