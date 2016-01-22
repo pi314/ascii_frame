@@ -20,22 +20,49 @@ def text_generator(data, width=None):
             yield lo
 
 
-def wrap(data, width=0, padding=0):
+def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
     if width and padding:
         width -= 2 * padding
         if width <= 0:
             raise ValueError('No remain width available, increase width or decrease padding.')
 
-    ret = list(text_generator(data, width=width))
+    if len(corners) != 4:
+        raise ValueError('Corners should be 4 characters/strings')
 
+    corner_tr = corners[0]
+    corner_br = corners[1]
+    corner_bl = corners[2]
+    corner_tl = corners[3]
+
+    if len(edges) != 4:
+        raise ValueError('Edges should be 4 characters/strings')
+
+    edge_t = edges[0]
+    edge_r = edges[1]
+    edge_b = edges[2]
+    edge_l = edges[3]
+
+    ret = list(text_generator(data, width=width))
     max_len = max(*chain(ret).map(lambda lo: lo.width), width)
 
-    return ['.{}.'.format('-' * (max_len + 2 * padding))] + chain(ret).map(
-        lambda lo: '|{p}{t}{s}{p}|'.format(
-            t=lo.text, p=' ' * padding,
-            s=' ' * (max_len - lo.width)
+    return [
+        '{ctl}{et}{ctr}'.format(
+            ctl=corner_tl,
+            et=edge_t * (max_len + 2 * padding),
+            ctr=corner_tr,
+        )] + chain(ret).map(
+            lambda lo: '{el}{p}{t}{s}{p}{er}'.format(
+                el=edge_l,
+                t=lo.text, p=' ' * padding,
+                s=' ' * (max_len - lo.width),
+                er=edge_r,
+            )
+        ).list + ["{cbl}{eb}{cbr}".format(
+            cbl=corner_bl,
+            eb=edge_b * (max_len + 2 * padding),
+            cbr=corner_br,
         )
-    ).list + ["'{}'".format('-' * (max_len + 2 * padding))]
+    ]
 
 
 def print(data, width=0, padding=0, **kwargs):

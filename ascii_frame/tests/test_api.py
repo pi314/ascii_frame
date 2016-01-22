@@ -1,3 +1,5 @@
+import pytest
+
 from ..ascii_frame import wrap
 
 
@@ -83,3 +85,23 @@ def test_width_wide_with_padding():
         '|   b           |',
         "'---------------'",
     ]
+
+
+def test_corner_and_edge_basic():
+    assert wrap(['a', 'b'], width=15, padding=3, corners="ABCD", edges="EFGH") == [
+        'DEEEEEEEEEEEEEEEA',
+        'H   a           F',
+        'H   b           F',
+        "CGGGGGGGGGGGGGGGB",
+    ]
+
+
+def test_exceptions():
+    with pytest.raises(ValueError):
+        wrap(['a'], width=3, padding=3)
+
+    with pytest.raises(ValueError):
+        wrap(['a'], corners='..')
+
+    with pytest.raises(ValueError):
+        wrap(['a'], edges='..')
