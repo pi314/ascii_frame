@@ -10,11 +10,13 @@ class LineObject:
         return 1 + (east_asian_width(c) in 'WF')
 
     def __init__(self, text):
-        self.text = re.sub(r'\x1b\[[^hm]*[hm]', '', text.rstrip())
+        self.text = text.rstrip()
 
     @property
     def width(self):
-        return sum(1 + (east_asian_width(c) in 'WF') for c in self.text)
+        return sum(
+                1 + (east_asian_width(c) in 'WF')
+                for c in re.sub(r'\x1b\[[^hm]*[hm]', '', self.text))
 
     def wrap(self, width):
         w, ret = 0, ''

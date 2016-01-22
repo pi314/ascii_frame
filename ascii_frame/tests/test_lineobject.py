@@ -4,12 +4,14 @@ from ..lineobject import LineObject
 def test_lineobject_text():
     assert LineObject('normal').text == 'normal'
     assert LineObject('right  ').text == 'right'
-    assert LineObject('\033[1;31mColor!\033[m   ').text == 'Color!'
+    assert LineObject('\033[1;31mColor!\033[m   ').text == '\033[1;31mColor!\033[m'
 
 
 def test_lineobject_width():
     assert LineObject('normal').width == 6
     assert LineObject('中文').width == 4
+    assert LineObject('\033[1;31mColor!\033[m   ').width == len('Color!')
+    assert LineObject('\033[1;31m中文\033[m   ').width == LineObject('中文').width
 
 
 def test_lineobject_eq_str():
