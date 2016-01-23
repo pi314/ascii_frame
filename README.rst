@@ -127,7 +127,7 @@ This Python module provides programming API to wrap text programmatically.
        '|| YATTA ||',
        '++=======++']
 
-    + Note that if every corner must has same width with its neighbor edges
+    + Note that every corner must has same width with its neighbor edges
 
   - Fancy frame:
 
