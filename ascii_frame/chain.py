@@ -31,6 +31,12 @@ class chain:
     def filter(self, func):
         return chain(filter(func, self.value))
 
+    def all(self, func):
+        return all(self.map(func))
+
+    def all_identical(self):
+        return len(set(self.value)) <= 1
+
     @property
     def list(self):
         return list(self)

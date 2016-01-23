@@ -26,21 +26,45 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
         if width <= 0:
             raise ValueError('No remain width available, increase width or decrease padding.')
 
+    if len(corners) == 1:
+        corners = corners * 4
+
+    if len(corners) == 2:
+        corners = corners + corners[::-1]
+
     if len(corners) != 4:
-        raise ValueError('Corners should be 4 characters/strings')
+        raise ValueError('Corners should be {1, 2, 4} characters/strings.')
 
-    corner_tr = corners[0]
-    corner_br = corners[1]
-    corner_bl = corners[2]
-    corner_tl = corners[3]
+    corner_tr = TextObject(corners[0])
+    corner_br = TextObject(corners[1])
+    corner_bl = TextObject(corners[2])
+    corner_tl = TextObject(corners[3])
 
-    if len(edges) != 4:
-        raise ValueError('Edges should be 4 characters/strings')
+    if len(edges) == 1:
+        edges = edges * 4
 
-    edge_t = edges[0]
-    edge_r = edges[1]
-    edge_b = edges[2]
-    edge_l = edges[3]
+    elif len(edges) == 2:
+        edges = edges * 2
+
+    elif len(edges) == 3:
+        edges = edges + edges[1]
+
+    elif len(edges) != 4:
+        raise ValueError('Edges should be 1 ~ 4 characters/strings')
+
+    edge_t = TextObject(edges[0])
+    edge_r = TextObject(edges[1])
+    edge_b = TextObject(edges[2])
+    edge_l = TextObject(edges[3])
+
+    if not chain([edge_t, edge_b]).all(lambda e: e.width > 0):
+        raise ValueError('Top and bottom edge\'s width should larger than 0.')
+
+    if not chain([edge_r, corner_tr, corner_br]).map(lambda x: x.width).all_identical():
+        raise ValueError('Corners and their neighbor edges should have same width.')
+
+    if not chain([edge_l, corner_tl, corner_bl]).map(lambda x: x.width).all_identical():
+        raise ValueError('Corners and their neighbor edges should have same width.')
 
     ret = list(text_generator(data, width=width))
     max_len = max(*chain(ret).map(lambda lo: lo.width), width)

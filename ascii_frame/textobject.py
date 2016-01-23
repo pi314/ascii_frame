@@ -1,4 +1,5 @@
 import re
+import math
 
 from unicodedata import east_asian_width
 # for more information, see http://unicode.org/reports/tr11/
@@ -43,3 +44,6 @@ class TextObject:
 
     def __mul__(self, multiplier):
         return self.text * multiplier
+
+    def repeat_to(self, goal_width):
+        return TextObject(self.text * math.ceil(goal_width / self.width))

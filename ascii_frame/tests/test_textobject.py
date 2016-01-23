@@ -23,3 +23,9 @@ def test_textobject_wrap():
     assert list(TextObject('normal text').wrap(100)) == ['normal text']
     assert list(TextObject('normal text').wrap(5)) == ['norma', 'l tex', 't']
     assert list(TextObject('中文').wrap(1)) == ['中', '文']
+
+
+def test_textobject_repeat_to():
+    assert TextObject('-').repeat_to(5) == '-----'
+    assert TextObject('XD').repeat_to(5) == 'XDXDXD'
+    assert TextObject('字').repeat_to(5) == '字字字'
