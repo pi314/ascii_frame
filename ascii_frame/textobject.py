@@ -45,5 +45,19 @@ class TextObject:
     def __mul__(self, multiplier):
         return self.text * multiplier
 
+    def __add__(self, other):
+        return TextObject(self.text + other)
+
     def repeat_to(self, goal_width):
-        return TextObject(self.text * math.ceil(goal_width / self.width))
+        ret = TextObject(self.text * math.floor(goal_width / self.width))
+        if ret.width == goal_width:
+            return ret
+
+        w = ret.width
+        for c in self.text:
+            if w >= goal_width:
+                return ret
+            w += self.uwidth(c)
+            ret += c
+
+        return ret

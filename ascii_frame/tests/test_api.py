@@ -58,7 +58,7 @@ def test_padding_basic():
     ]
 
 
-def test_width_narrow_with_padding():
+def test_narrow_width_with_padding():
     assert wrap(['ascii_frame'], width=9, padding=3) == [
         '.---------.',
         '|   asc   |',
@@ -78,7 +78,7 @@ def test_width_narrow_with_padding():
     ]
 
 
-def test_width_wide_with_padding():
+def test_wide_width_with_padding():
     assert wrap(['a', 'b'], width=15, padding=3) == [
         '.---------------.',
         '|   a           |',
@@ -87,95 +87,121 @@ def test_width_wide_with_padding():
     ]
 
 
+def test_corners_basic():
+    assert wrap(['YATTA'], corners='+') == [
+        '+-----+',
+        '|YATTA|',
+        '+-----+',
+    ]
+
+    assert wrap(['YATTA'], corners='+#') == [
+        '+-----+',
+        '|YATTA|',
+        '#-----#',
+    ]
+
+    assert wrap(['YATTA'], corners='+#$%') == [
+        '%-----+',
+        '|YATTA|',
+        '$-----#',
+    ]
+
+
+def test_edges_basic():
+    assert wrap(['YATTA'], corners='#', edges='#') == [
+        '#######',
+        '#YATTA#',
+        '#######',
+    ]
+
+    assert wrap(['YATTA'], corners='/\\/\\', edges='|-') == [
+        '\|||||/',
+        '-YATTA-',
+        '/|||||\\',
+    ]
+
+    assert wrap(['YATTA'], corners='#', edges='*|*') == [
+        '#*****#',
+        '|YATTA|',
+        '#*****#',
+    ]
+
+    assert wrap(['YATTA'], corners=' ', edges='^>v<') == [
+        ' ^^^^^ ',
+        '<YATTA>',
+        ' vvvvv ',
+    ]
+
+
 def test_corners_and_edges():
-    assert wrap(['a', 'b'], width=15, padding=3, corners="A") == [
-        'A---------------A',
-        '|   a           |',
-        '|   b           |',
-        "A---------------A",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, corners="AB") == [
-        'A---------------A',
-        '|   a           |',
-        '|   b           |',
-        "B---------------B",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, edges="A") == [
-        '.AAAAAAAAAAAAAAA.',
-        'A   a           A',
-        'A   b           A',
-        "'AAAAAAAAAAAAAAA'",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, edges="AB") == [
-        '.AAAAAAAAAAAAAAA.',
-        'B   a           B',
-        'B   b           B',
-        "'AAAAAAAAAAAAAAA'",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, corners="ABCD", edges="EFG") == [
-        'DEEEEEEEEEEEEEEEA',
-        'F   a           F',
-        'F   b           F',
-        "CGGGGGGGGGGGGGGGB",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, corners="ABCD", edges="EFGH") == [
-        'DEEEEEEEEEEEEEEEA',
-        'H   a           F',
-        'H   b           F',
-        "CGGGGGGGGGGGGGGGB",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, corners=['++'], edges=['=', '||'] * 2) == [
-        '++===============++',
-        '||   a           ||',
-        '||   b           ||',
-        "++===============++",
-    ]
-
-    assert wrap(['a', 'b'], width=15, padding=3, corners=' ', edges='^>v<') == [
-        ' ^^^^^^^^^^^^^^^ ',
-        '<   a           >',
-        '<   b           >',
-        " vvvvvvvvvvvvvvv ",
+    assert wrap(['YATTA'], padding=1, corners=['++'], edges=['=', '||'] * 2) == [
+        '++=======++',
+        '|| YATTA ||',
+        '++=======++',
     ]
 
 
-def test_exceptions():
+def test_fancy_edges():
+    assert wrap(['YATTA YATTA'], padding=1, corners='.*', edges=['-*-.', '|', "-.-*"]) == [
+        '.-*-.-*-.-*-.-.',
+        '| YATTA YATTA |',
+        '*-.-*-.-*-.-*-*',
+    ]
+
+    assert wrap(['YATTA YATTA YATTA!!!!'], padding=1,
+            corners='  _`',
+            edges=['"*-=+._`', ')', '.+=-*"`_', '>']) == [
+        '`"*-=+._`"*-=+._`"*-=+._ ',
+        '> YATTA YATTA YATTA!!!! )',
+        '_.+=-*"`_.+=-*"`_.+=-*"` ',
+    ]
+
+
+def test_exceptions_narrow():
     # too narrow
     with pytest.raises(ValueError):
         wrap(['a'], width=3, padding=3)
 
+
+def test_exceptions_make_up_corners():
     # automatically make up corners
     wrap(['a'], corners='.')
+    wrap(['a'], corners=['.'])
     wrap(['a'], corners='.' * 2)
+    wrap(['a'], corners=['.'] * 2)
 
     # not enough corner
     with pytest.raises(ValueError):
         wrap(['a'], corners='.' * 3)
+        wrap(['a'], corners=['.'] * 3)
 
     # right corners amount
     wrap(['a'], corners='.' * 4)
+    wrap(['a'], corners=['.'] * 4)
 
     # too many corners
     with pytest.raises(ValueError):
         wrap(['a'], corners='.' * 5)
+        wrap(['a'], corners=['.'] * 5)
 
+
+def test_exceptions_make_up_edges():
     # automatically make up edges
     wrap(['a'], edges='.')
+    wrap(['a'], edges=['.'])
     wrap(['a'], edges='.' * 2)
+    wrap(['a'], edges=['.'] * 2)
     wrap(['a'], edges='.' * 3)
+    wrap(['a'], edges=['.'] * 3)
 
     # right edges amount
     wrap(['a'], edges='.' * 4)
+    wrap(['a'], edges=['.'] * 4)
 
     # too many edges
     with pytest.raises(ValueError):
         wrap(['a'], edges='.' * 5)
+        wrap(['a'], edges=['.'] * 5)
 
     # wide corners
     with pytest.raises(ValueError):
@@ -185,5 +211,6 @@ def test_exceptions():
     with pytest.raises(ValueError):
         wrap(['a'], corners=['+'] * 4, edges=['-', '||'] * 2)
 
+def test_exceptions_wide_corner_and_edges():
     # wide corners with wide edges, ok
     wrap(['a'], corners=['++'] * 4, edges=['-', '||'] * 2)

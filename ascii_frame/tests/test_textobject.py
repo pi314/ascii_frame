@@ -28,5 +28,6 @@ def test_textobject_wrap():
 
 def test_textobject_repeat_to():
     assert TextObject('-').repeat_to(5) == '-----'
-    assert TextObject('XD').repeat_to(5) == 'XDXDXD'
+    assert TextObject('XD').repeat_to(5) == 'XDXDX'
     assert TextObject('字').repeat_to(5) == '字字字'
+    assert TextObject('.-*-').repeat_to(10) == '.-*-.-*-.-'

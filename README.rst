@@ -116,16 +116,28 @@ This Python module provides programming API to wrap text programmatically.
       >>> ascii_frame.wrap(['YATTA'], corners=' ', edges='^>v<')
       [' ^^^^^ ',
        '<YATTA>',
-       " vvvvv "]
+       ' vvvvv ']
 
   - Customizable both:
 
     .. code:: python
 
-      >>> ascii_frame.wrap(['YATTA'], corners=['++'], edges=['=', '||'] * 2)
-      ['++=====++',
-       '||YATTA||',
-       "++=====++"]
+      >>> ascii_frame.wrap(['YATTA'], padding=1, corners=['++'], edges=['=', '||'] * 2)
+      ['++=======++',
+       '|| YATTA ||',
+       '++=======++']
+
+    + Note that if every corner must has same width with its neighbor edges
+
+  - Fancy frame:
+
+    .. code:: python
+
+      >>> ascii_frame.wrap(['YATTA YATTA YATTA!!!!'], padding=1, corners='  _`',
+                           edges=['"*-=+._`', ')', '.+=-*"`_', '>'])
+      ['`"*-=+._`"*-=+._`"*-=+._ ',
+       '> YATTA YATTA YATTA!!!! )',
+       '_.+=-*"`_.+=-*"`_.+=-*"` ']
 
 * ``print(data, width=0, padding=0, **kwargs)``
 

@@ -47,7 +47,7 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
         edges = edges * 2
 
     elif len(edges) == 3:
-        edges = edges + edges[1]
+        edges = edges + edges[1:2]
 
     elif len(edges) != 4:
         raise ValueError('Edges should be 1 ~ 4 characters/strings')
@@ -67,23 +67,26 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
         raise ValueError('Corners and their neighbor edges should have same width.')
 
     ret = list(text_generator(data, width=width))
-    max_len = max(*chain(ret).map(lambda lo: lo.width), width)
+    max_width = max(*chain(ret).map(lambda lo: lo.width), width)
+    edge_t = edge_t.repeat_to(max_width + 2 * padding)
+    edge_b = edge_b.repeat_to(max_width + 2 * padding)
 
     return [
         '{ctl}{et}{ctr}'.format(
             ctl=corner_tl,
-            et=edge_t * (max_len + 2 * padding),
+            et=edge_t,
             ctr=corner_tr,
         )] + chain(ret).map(
             lambda lo: '{el}{p}{t}{s}{p}{er}'.format(
                 el=edge_l,
-                t=lo.text, p=' ' * padding,
-                s=' ' * (max_len - lo.width),
+                p=' ' * padding,
+                t=lo.text,
+                s=' ' * (max_width - lo.width),
                 er=edge_r,
             )
         ).list + ["{cbl}{eb}{cbr}".format(
             cbl=corner_bl,
-            eb=edge_b * (max_len + 2 * padding),
+            eb=edge_b,
             cbr=corner_br,
         )
     ]
