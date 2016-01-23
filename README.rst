@@ -47,28 +47,97 @@ As a Python Module
 -------------------
 This Python module provides programming API to wrap text programmatically.
 
-* ``wrap(data, width=0, padding=0)`` :
+* ``wrap(data, width=0, padding=0)``
 
-  .. code:: python
-  
-    >>> import ascii_frame
-    >>> ascii_frame.wrap(['ascii frame'])
-    ['.-----.', '|ascii|', '|frame|', "'-----'"]
-    >>> ascii_frame.wrap(['ascii frame'], width=3)
-    ['.---.', '|asc|', '|ii |', '|fra|', '|me |', "'---'"]
-    >>> ascii_frame.wrap(['ascii', 'frame'], width=7, padding=3)
-    ['.-------.',
-     '|   a   |',
-     '|   s   |',
-     '|   c   |',
-     '|   i   |',
-     '|   i   |',
-     '|   f   |',
-     '|   r   |',
-     '|   a   |',
-     '|   m   |',
-     '|   e   |',
-     "'-------'"]
+  - Basic usage:
+
+    .. code:: python
+
+      >>> import ascii_frame
+      >>> ascii_frame.wrap(['ascii frame'])
+      ['.-----.',
+       '|ascii|',
+       '|frame|',
+       "'-----'"]
+      >>> ascii_frame.wrap(['ascii frame'], width=3)
+      ['.---.',
+       '|asc|',
+       '|ii |',
+       '|fra|',
+       '|me |',
+       "'---'"]
+      >>> ascii_frame.wrap(['ascii', 'frame'], width=7, padding=3)
+      ['.-------.',
+       '|   a   |',
+       '|   s   |',
+       '|   c   |',
+       '|   i   |',
+       '|   i   |',
+       '|   f   |',
+       '|   r   |',
+       '|   a   |',
+       '|   m   |',
+       '|   e   |',
+       "'-------'"]
+
+  - Customizable corners (from top right in clockwise order):
+
+    .. code:: python
+
+      >>> ascii_frame.wrap(['YATTA'], corners='+')
+      ['+-----+',
+       '|YATTA|',
+       '+-----+']
+      >>> ascii_frame.wrap(['YATTA'], corners='+#')
+      ['+-----+',
+       '|YATTA|',
+       '#-----#']
+      >>> ascii_frame.wrap(['YATTA'], corners='+#$%')
+      ['%-----+',
+       '|YATTA|',
+       '$-----#']
+
+  - Customizable edges (from top in clockwise order):
+
+    .. code:: python
+
+      >>> ascii_frame.wrap(['YATTA'], corners='#', edges='#')
+      ['#######',
+       '#YATTA#',
+       '#######']
+      >>> ascii_frame.wrap(['YATTA'], corners='/\\/\\', edges='|-')
+      ['\|||||/',
+       '-YATTA-',
+       '/|||||\\']
+      >>> ascii_frame.wrap(['YATTA'], corners='#', edges='*|*')
+      ['#*****#',
+       '|YATTA|',
+       '#*****#']
+      >>> ascii_frame.wrap(['YATTA'], corners=' ', edges='^>v<')
+      [' ^^^^^ ',
+       '<YATTA>',
+       ' vvvvv ']
+
+  - Customizable both:
+
+    .. code:: python
+
+      >>> ascii_frame.wrap(['YATTA'], padding=1, corners=['++'], edges=['=', '||'] * 2)
+      ['++=======++',
+       '|| YATTA ||',
+       '++=======++']
+
+    + Note that if every corner must has same width with its neighbor edges
+
+  - Fancy frame:
+
+    .. code:: python
+
+      >>> ascii_frame.wrap(['YATTA YATTA YATTA!!!!'], padding=1, corners='  _`',
+                           edges=['"*-=+._`', ')', '.+=-*"`_', '>'])
+      ['`"*-=+._`"*-=+._`"*-=+._ ',
+       '> YATTA YATTA YATTA!!!! )',
+       '_.+=-*"`_.+=-*"`_.+=-*"` ']
 
 * ``print(data, width=0, padding=0, **kwargs)``
 
