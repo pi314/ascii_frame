@@ -137,6 +137,13 @@ def test_corners_and_edges():
         "++===============++",
     ]
 
+    assert wrap(['a', 'b'], width=15, padding=3, corners=' ', edges='^>v<') == [
+        ' ^^^^^^^^^^^^^^^ ',
+        '<   a           >',
+        '<   b           >',
+        " vvvvvvvvvvvvvvv ",
+    ]
+
 
 def test_exceptions():
     # too narrow

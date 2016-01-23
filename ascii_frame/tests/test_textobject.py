@@ -5,6 +5,7 @@ def test_textobject_text():
     assert TextObject('normal').text == 'normal'
     assert TextObject('right  ').text == 'right'
     assert TextObject('\033[1;31mColor!\033[m   ').text == '\033[1;31mColor!\033[m'
+    assert TextObject('right  ', rstrip=False).text == 'right  '
 
 
 def test_textobject_width():

@@ -35,10 +35,10 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
     if len(corners) != 4:
         raise ValueError('Corners should be {1, 2, 4} characters/strings.')
 
-    corner_tr = TextObject(corners[0])
-    corner_br = TextObject(corners[1])
-    corner_bl = TextObject(corners[2])
-    corner_tl = TextObject(corners[3])
+    corner_tr = TextObject(corners[0], rstrip=False)
+    corner_br = TextObject(corners[1], rstrip=False)
+    corner_bl = TextObject(corners[2], rstrip=False)
+    corner_tl = TextObject(corners[3], rstrip=False)
 
     if len(edges) == 1:
         edges = edges * 4
@@ -52,10 +52,10 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
     elif len(edges) != 4:
         raise ValueError('Edges should be 1 ~ 4 characters/strings')
 
-    edge_t = TextObject(edges[0])
-    edge_r = TextObject(edges[1])
-    edge_b = TextObject(edges[2])
-    edge_l = TextObject(edges[3])
+    edge_t = TextObject(edges[0], rstrip=False)
+    edge_r = TextObject(edges[1], rstrip=False)
+    edge_b = TextObject(edges[2], rstrip=False)
+    edge_l = TextObject(edges[3], rstrip=False)
 
     if not chain([edge_t, edge_b]).all(lambda e: e.width > 0):
         raise ValueError('Top and bottom edge\'s width should larger than 0.')

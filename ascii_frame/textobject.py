@@ -10,8 +10,8 @@ class TextObject:
     def uwidth(cls, c):
         return 1 + (east_asian_width(c) in 'WF')
 
-    def __init__(self, text):
-        self.text = text.rstrip()
+    def __init__(self, text, rstrip=True):
+        self.text = text.rstrip() if rstrip else text
 
     @property
     def width(self):
