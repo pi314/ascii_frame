@@ -4,7 +4,7 @@ from unicodedata import east_asian_width
 # for more information, see http://unicode.org/reports/tr11/
 
 
-class LineObject:
+class TextObject:
     @classmethod
     def uwidth(cls, c):
         return 1 + (east_asian_width(c) in 'WF')
@@ -22,12 +22,12 @@ class LineObject:
         w, ret = 0, ''
         for c in self.text:
             if w + self.uwidth(c) > width and w > 0:
-                yield LineObject(ret)
+                yield TextObject(ret)
                 w, ret = 0, ''
 
             w, ret = w + self.uwidth(c), ret + c
 
-        yield LineObject(ret)
+        yield TextObject(ret)
 
     def __str__(self):
         return self.text
@@ -36,7 +36,10 @@ class LineObject:
         if isinstance(other, str):
             return self.text == other
 
-        if isinstance(other, LineObject):
+        if isinstance(other, TextObject):
             return self.text == other.text
 
         return str(self) == str(other)
+
+    def __mul__(self, multiplier):
+        return self.text * multiplier

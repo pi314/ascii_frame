@@ -3,14 +3,14 @@ import re
 import argparse
 
 from .chain import chain
-from .lineobject import LineObject
+from .textobject import TextObject
 
 
 print_ = print
 
 
 def text_generator(data, width=None):
-    m = chain(data).map(LineObject)
+    m = chain(data).map(TextObject)
 
     for lo in m:
         if width and width > 0 and lo.width > width:
