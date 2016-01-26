@@ -70,6 +70,7 @@ def wrap(data, width=0, padding=0, corners=".''.", edges='-|-|'):
     max_width = max(*chain(ret).map(lambda lo: lo.width), width)
     edge_t = edge_t.repeat_to(max_width + 2 * padding)
     edge_b = edge_b.repeat_to(max_width + 2 * padding)
+    max_width = max(max_width, edge_t.width - 2 * padding, edge_b.width - 2 * padding)
 
     return [
         '{ctl}{et}{ctr}'.format(
@@ -97,6 +98,22 @@ def print(data, width=0, padding=0, corners=".''.", edges='-|-|', **kwargs):
         print_(l, **kwargs)
 
 
+def frame_argument(v):
+    ret = v
+
+    if len(ret) == 1:
+        ret = ret * 4
+
+    if len(ret) == 2:
+        ret = ret + ret[::-1]
+
+    if len(ret) != 4:
+        raise argparse.ArgumentTypeError('Corners should be {1, 2, 4} characters/strings.')
+
+    return ret
+
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog='ascii_frame',
@@ -117,13 +134,11 @@ def main():
         help='Read content from file.')
 
     parser.add_argument('-c', '--corners',
-        type=str,
-        default=".''.",
+        type=str, nargs='*', default=".''.",
         help='Customize corners of frame.  4 chars in clockwise order from top right.')
 
     parser.add_argument('-e', '--edges',
-        type=str,
-        default="-|-|",
+        type=str, nargs='*', default="-|-|",
         help='Customize corners of frame.  4 chars in clockwise order from top.')
 
     args = parser.parse_args()

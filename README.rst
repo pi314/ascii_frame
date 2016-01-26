@@ -41,6 +41,19 @@ You can also specify width and padding with ``-w`` and ``-p`` arguments ::
   |   3 setup.py                                     |
   '--------------------------------------------------'
 
+Fancy frame ::
+
+  $ ls -l | ascii_frame -p 1 -c 〇 -e 〇
+  〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇
+  〇 total 32                                                           〇
+  〇 -rw-r--r--  1 cychih  staff  5550  1 26 21:40 README.rst           〇
+  〇 drwxr-xr-x  9 cychih  staff   306  1 26 21:39 ascii_frame          〇
+  〇 drwxr-xr-x  6 cychih  staff   204  1 21 22:16 ascii_frame.egg-info 〇
+  〇 drwxr-xr-x  3 cychih  staff   102  1 22 18:55 scripts              〇
+  〇 -rw-r--r--  1 cychih  staff    22  1 21 22:16 setup.cfg            〇
+  〇 -rw-r--r--  1 cychih  staff  1606  1 21 22:16 setup.py             〇
+  〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇
+
 Note: the frame itself does not calculated into width, so if you specify ``-w 50``, the output will actually be 52 character wide.
 
 As a Python Module

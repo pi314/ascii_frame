@@ -156,6 +156,13 @@ def test_fancy_edges():
         '_.+=-*"`_.+=-*"`_.+=-*"` ',
     ]
 
+    # wide edges
+    assert wrap(['YATTA'], corners='十' * 4, edges='十' * 4) == [
+        '十十十十十',
+        '十YATTA 十',
+        '十十十十十',
+    ]
+
 
 def test_exceptions_narrow():
     # too narrow
