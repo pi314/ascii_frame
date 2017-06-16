@@ -38,7 +38,7 @@ setup(
         'Development Status :: 1 - Planning',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Rejected :: Do What the Fuck You Want to Public License 2 (WTFPL 2)'
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: Chinese (Traditional)',
         'Natural Language :: English',
         'Operating System :: MacOS :: MacOS X',
